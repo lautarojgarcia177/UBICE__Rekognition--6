@@ -14,11 +14,25 @@ import {
   Input,
   Button,
   useToast,
+  Text,
+  useUpdateEffect,
 } from '@chakra-ui/react';
+import { IAWSCredentials } from 'interfaces';
+import { useEffect, useState } from 'react';
 import { Save } from 'react-feather';
+import { useRecoilState } from 'recoil';
+import { awsCredentialsState } from 'renderer/recoil/atoms';
 
 export default function AwsCredentialsModal({ closeDrawer }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [awsCredentials, setAwsCredentials] =
+    useRecoilState(awsCredentialsState);
+  const [showCredentialsSaved, setShowCredentialsSaved] = useState(false);
+
+  useUpdateEffect(() => {
+    setShowCredentialsSaved(true);
+    setTimeout(() => setShowCredentialsSaved(false), 1500);
+  }, [awsCredentials]);
 
   return (
     <>
@@ -30,14 +44,19 @@ export default function AwsCredentialsModal({ closeDrawer }) {
           <ModalHeader>Credenciales de aws</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* <FormControl marginBottom={2}>
+            <FormControl marginBottom={2}>
               <FormLabel htmlFor="awsAccessKeyId">Access Key Id</FormLabel>
               <Input
                 type="text"
                 value={awsCredentials.awsAccessKeyId}
                 name="awsAccessKeyId"
                 id="awsAccessKeyId"
-                onChange={handleAccessKeyIdChange}
+                onChange={(event) => {
+                  setAwsCredentials((awsCredentials) => ({
+                    ...awsCredentials,
+                    awsAccessKeyId: event.target.value,
+                  }));
+                }}
               />
             </FormControl>
             <FormControl>
@@ -49,25 +68,17 @@ export default function AwsCredentialsModal({ closeDrawer }) {
                 value={awsCredentials.awsSecretAccessKey}
                 name="awsSecretAccessKey"
                 id="awsSecretAccessKey"
-                onChange={handleSecretAccessKeyChange}
+                onChange={(event) => {
+                  setAwsCredentials((awsCredentials) => ({
+                    ...awsCredentials,
+                    awsSecretAccessKey: event.target.value,
+                  }));
+                }}
               />
-            </FormControl> */}
+            </FormControl>
           </ModalBody>
           <ModalFooter>
-            <IconButton
-              onClick={onClose}
-              aria-label="Cancelar"
-              colorScheme="red"
-              icon={<CloseIcon />}
-              marginEnd={4}
-            />
-            <IconButton
-              aria-label="Guardar"
-              icon={<Save />}
-              colorScheme="green"
-              type="button"
-              // onClick={onSave}
-            />
+           {showCredentialsSaved && <Text color="#276749">Los cambios han sido guardados</Text> }
           </ModalFooter>
         </ModalContent>
       </Modal>
