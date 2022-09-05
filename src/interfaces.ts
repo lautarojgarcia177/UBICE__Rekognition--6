@@ -8,8 +8,8 @@ export interface IAWSRekognitionSettings {
 }
 
 export interface IRekognitionFile {
-  id: number,
-  name: string,
-  path: string,
-  numbers: number[] | string[],
+  id: number;
+  name: string;
+  path: string;
+  numbers: number[] | string[];
 }

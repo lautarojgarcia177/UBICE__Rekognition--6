@@ -23,7 +23,7 @@ import { Save } from 'react-feather';
 import { useRecoilState } from 'recoil';
 import { awsCredentialsState } from 'renderer/recoil/atoms';
 
-export default function AwsCredentialsModal({ closeDrawer }) {
+export default function AWSCredentialsModal({ closeDrawer }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [awsCredentials, setAwsCredentials] =
     useRecoilState(awsCredentialsState);
