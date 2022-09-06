@@ -7,13 +7,19 @@ import { Rekognize } from './pages/Rekognize';
 import { Rekognizing } from './pages/Rekognizing';
 import { useToast } from '@chakra-ui/react';
 import { IAWSCredentials } from 'interfaces';
-import { awsCredentialsState } from './recoil/atoms';
+import {
+  awsCredentialsState,
+  awsRekognitionSettingsState,
+} from './recoil/atoms';
 
 export default function App() {
   const toast = useToast();
   useEffect(() => startUp(), []);
   const [awsCredentials, setAwsCredentials] =
     useRecoilState(awsCredentialsState);
+  const [awsRekognitionSettings, setAwsRekognitionSettings] = useRecoilState(
+    awsRekognitionSettingsState
+  );
 
   function startUp() {
     // Check if there are credentials loaded
@@ -33,6 +39,13 @@ export default function App() {
       } else {
         // Load app state
         setAwsCredentials(credentials);
+      }
+    });
+    window.electron.getAWSRekognitionSettings().then((settings) => {
+      if (!settings) {
+      } else {
+        // Load app state
+        setAwsRekognitionSettings(settings);
       }
     });
   }

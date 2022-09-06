@@ -1,4 +1,3 @@
-import { CloseIcon } from '@chakra-ui/icons';
 import {
   Modal,
   ModalOverlay,
@@ -8,18 +7,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  IconButton,
   FormControl,
   FormLabel,
   Input,
   Button,
-  useToast,
   Text,
   useUpdateEffect,
 } from '@chakra-ui/react';
-import { IAWSCredentials } from 'interfaces';
-import { useEffect, useState } from 'react';
-import { Save } from 'react-feather';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { awsCredentialsState } from 'renderer/recoil/atoms';
 

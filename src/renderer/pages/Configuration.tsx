@@ -6,12 +6,12 @@ export function Configuration() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Center marginBottom="2rem">
+      <Center>
         <VStack>
-          <Heading>Configuracion</Heading>
-        </VStack>
+          <Heading marginBottom="2rem">Configuracion</Heading>
           <AwsCredentialsModal closeDrawer={onClose} />
           <AWSRekognitionSettingsModal closeDrawer={onClose} />
+        </VStack>
       </Center>
     </>
   );
