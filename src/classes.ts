@@ -6,11 +6,10 @@ import {
 } from '@aws-sdk/client-rekognition';
 import { uniq } from 'lodash';
 import { useRegex } from '../lib/utils';
+import { AWSRekognitionErrorTypes } from './enums';
 // import * as store from '../services/store.service';
 
-
-
-class UBICEAWSClient {
+export class UBICEAWSClient {
   client: RekognitionClient;
   constructor(credentials: IAWSCredentials, region: string = 'us-west-1') {
     this.client = new RekognitionClient({
@@ -33,7 +32,19 @@ class UBICEAWSClient {
         },
       },
     });
-    let commandResult = await this.client.send(command);
+    try {
+      let commandResult = await this.client.send(command);
+    } catch(err) {
+      let errorType: AWSRekognitionErrorTypes
+      switch(err.__type) {
+        case 'InvalidSignatureException':
+          errorType = AWSRekognitionErrorTypes.InvalidSignatureException
+        break;
+        default:
+        errorType =  AWSRekognitionErrorTypes.Unknown;
+      }
+      return Promise.reject(errorType);
+    }
     const numbersArray = commandResult.TextDetections.filter((textDetection) =>
       useRegex(textDetection.DetectedText)
     ).map((textDetection) => textDetection.DetectedText);

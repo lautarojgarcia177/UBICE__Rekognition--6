@@ -4,13 +4,13 @@ import { RecoilRoot, useRecoilState } from 'recoil';
 import { Configuration } from './pages/Configuration';
 import { Home } from './pages/Home';
 import { Rekognize } from './pages/Rekognize';
-import { Rekognizing } from './pages/Rekognizing';
 import { useToast } from '@chakra-ui/react';
 import { IAWSCredentials } from 'interfaces';
 import {
   awsCredentialsState,
   awsRekognitionSettingsState,
 } from './recoil/atoms';
+import Rekognizing from './pages/Rekognizing';
 
 export default function App() {
   const toast = useToast();
@@ -47,6 +47,16 @@ export default function App() {
         // Load app state
         setAwsRekognitionSettings(settings);
       }
+    });
+    // Show errors
+    window.electron.onError((error: Error) => {
+      toast({
+        title: error.name,
+        description: error.message,
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      })
     });
   }
 
