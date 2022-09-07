@@ -1,4 +1,4 @@
-import { IAWSCredentials, IAWSRekognitionSettings } from 'interfaces';
+import { IAWSCredentials, IAWSRekognitionSettings, IRekognitionFile } from 'interfaces';
 import { atom } from 'recoil';
 
 export const awsCredentialsState = atom({
@@ -42,4 +42,9 @@ export const awsRekognitionSettingsState = atom({
       });
     },
   ],
+});
+
+export const filesState = atom({
+  key: 'files',
+  default: [] as IRekognitionFile[],
 });
