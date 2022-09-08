@@ -1,10 +1,18 @@
-import { Button, Container, List, ListIcon, ListItem, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Container,
+  List,
+  ListIcon,
+  ListItem,
+  VStack,
+} from '@chakra-ui/react';
 import { IRekognitionFile } from 'interfaces';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import DropFileInput from 'renderer/components/drop-file-input/DropFileInput';
 import { filesState } from 'renderer/recoil/atoms';
 import { Image } from 'react-feather';
+import { useEffect } from 'react';
 
 export function Rekognize() {
   const navigate = useNavigate();
@@ -42,7 +50,7 @@ export function Rekognize() {
   }
 
   const listFiles = statefiles.map((file) => (
-    <ListItem key={file.id} className='li__file-name'>
+    <ListItem key={file.id} className="li__file-name">
       <ListIcon as={Image} />
       <span>{file.name}</span>
     </ListItem>
@@ -63,7 +71,7 @@ export function Rekognize() {
           Haga click en la caja o arrastre las fotos al centro de la misma.
         </small>
       </Container>
-      {statefiles.length && true && (
+      {statefiles.length && (
         <>
           <Container maxHeight="600px" overflow="auto">
             <List>{listFiles}</List>

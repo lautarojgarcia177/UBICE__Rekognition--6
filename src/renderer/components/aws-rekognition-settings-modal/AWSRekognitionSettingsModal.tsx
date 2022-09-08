@@ -38,10 +38,28 @@ export default function AWSRekognitionSettingsModal({ closeDrawer }) {
         setAwsRekognitionSettings(_awsRekognitionSettings);
         setIsLoading(false);
       });
+    document.addEventListener('keydown', keydownHandler);
+    return () => {
+      document.removeEventListener('keydown', keydownHandler);
+    };
   }, []);
+
+  function keydownHandler(event): void {
+    switch (event.key) {
+      case 'Enter':
+        event.preventDefault();
+        onSave();
+        break;
+      case 'Esc':
+        event.preventDefault();
+        onClose();
+        break;
+    }
+  }
 
   function onSave() {
     window.electron.setAWSRekognitionSettings(awsRekognitionSettings);
+    onClose();
   }
 
   function handleMinConfidenceChange(event): void {
@@ -70,6 +88,7 @@ export default function AWSRekognitionSettingsModal({ closeDrawer }) {
         min="0"
         max="100"
         onChange={handleMinConfidenceChange}
+        autoFocus
       />
     </FormControl>
   );
