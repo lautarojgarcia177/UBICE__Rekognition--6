@@ -4,12 +4,12 @@ import { IRekognitionFile } from '../interfaces';
 import * as storeSvc from '../services/store.service';
 import * as exiftoolService from '../services/exiftool.service';
 
-export function rekognizeImages(
+export async function rekognizeImages(
   files: IRekognitionFile[],
   progressCallback: (...args: any) => void,
   finishCallback: (...args: any) => void,
   errorCallback: (...args: any) => void
-): void {
+): Promise<any> {
   const awsCredentials = storeSvc.getAWSCredentials();
   const awsRekognitionSettings = storeSvc.getAWSRekognitionSettings();
   const awsClient = new UBICEAWSClient(awsCredentials);
@@ -17,23 +17,24 @@ export function rekognizeImages(
   // Create Promises Array
   const rekognitionPromises: Promise<any>[] = [];
   for (let image of files) {
-    const rekognitionPromise = awsClient
-      // Rekognize numbers in AWS
-      .rekognize(image.path, awsRekognitionSettings.minConfidence)
-      .then((rekognizedNumbers: any[]) => {
-        console.log(rekognizedNumbers, typeof rekognizedNumbers[0]);
+    try {
+      const rekognizedNumbers = await awsClient.rekognize(
+        image.path,
+        awsRekognitionSettings.minConfidence
+        );
         image.numbers = rekognizedNumbers;
-        // Write numbers on metadata
-        exiftoolService
-          .writeMetadataOnRekognizedImage(image)
-          .then(() => progressCallback())
-          .catch((err) => exiftoolWriteMetadataPromiseErrorHandler(err));
-      })
-      .catch((err: AWSRekognitionErrorTypes) =>
-        awsRekognitionPromiseErrorHandler(err)
-      );
-    rekognitionPromises.push(rekognitionPromise);
+        console.log(image.numbers);
+    } catch (err) {
+      awsRekognitionPromiseErrorHandler(err);
+    }
+    try {
+      await exiftoolService.writeMetadataOnRekognizedImage(image);
+    } catch(err) {
+      exiftoolWriteMetadataPromiseErrorHandler(err);
+    }
+    progressCallback();
   }
+  finishCallback();
   function awsRekognitionPromiseErrorHandler(err: AWSRekognitionErrorTypes) {
     // Generar el objeto de error
     const error = new Error();
@@ -60,14 +61,4 @@ export function rekognizeImages(
     }
     errorCallback(error);
   }
-
-  // Subscribe to promise
-  Promise.all(rekognitionPromises)
-    .then((result) => {
-      console.log('EXITO!!!!');
-      finishCallback();
-    })
-    .catch((err) => {
-      console.log('Promise.all error !!!!!!!!', err);
-    });
 }
