@@ -8,8 +8,8 @@ declare global {
       setAWSRekognitionSettings(settings: IAWSRekognitionSettings): void;
       getAWSRekognitionSettings(): Promise<IAWSRekognitionSettings>;
       startImagesRekognition(files: IRekognitionFile[]): IRekognitionFile[];
-      // onRekognitionFinish
-      // onRekognitionProgress
+      onRekognitionFinish(callback): void;
+      onRekognitionProgress(callback): void;
       onError(callback): void;
     };
   }

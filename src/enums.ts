@@ -1,4 +1,5 @@
 export enum AWSRekognitionErrorTypes {
   Unknown = 'Unknown',
-  InvalidSignatureException = 'InvalidSignatureException'
+  InvalidSignatureException = 'InvalidSignatureException',
+  ValidationException = 'ValidationException',
 }

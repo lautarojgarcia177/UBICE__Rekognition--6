@@ -22,6 +22,9 @@ export class UBICEAWSClient {
   }
   async rekognize(imagePath: string, minConfidence: number = 95): Promise<any> {
     const image = fs.readFileSync(imagePath);
+    if (isNaN(minConfidence)) {
+      minConfidence = 95;
+    }
     const command = new DetectTextCommand({
       Image: {
         Bytes: image,
@@ -32,8 +35,9 @@ export class UBICEAWSClient {
         },
       },
     });
+    let commandResult: any;
     try {
-      let commandResult = await this.client.send(command);
+      commandResult = await this.client.send(command);
     } catch(err) {
       let errorType: AWSRekognitionErrorTypes
       switch(err.__type) {

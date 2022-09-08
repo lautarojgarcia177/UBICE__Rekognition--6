@@ -38,18 +38,44 @@ const Rekognizing = () => {
   useEffect(() => {
     window.electron.startImagesRekognition(stateFiles);
     window.electron.onError((_event, error: Error) => {
-      switch(error.name) {
+      switch (error.name) {
+        case AWSRekognitionErrorTypes.InvalidSignatureException:
+          navigate('/');
+          break;
         case AWSRekognitionErrorTypes.InvalidSignatureException:
           navigate('/');
           break;
       }
       navigate('/');
     });
+    window.electron.onRekognitionProgress((_event, progress: number) => {
+      handleProgress(progress);
+    });
+    window.electron.onRekognitionFinish((_event, ein) => {
+      handleFinish();
+    });
   }, []);
+
+  function handleProgress(progress: number): void {
+    setRekognitionProgress(Math.ceil(progress));
+    setProgressCount(p => p + 1);
+  }
 
   function handleCancel(): void {
     setStateFiles([]);
     navigate('/');
+  }
+
+  function handleFinish(): void {
+    setStateFiles([]);
+    navigate('/');
+    toast({
+      title: 'Exito',
+      description: 'Se ha finalizado de rekonocer y etiquetar las imagenes',
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+    })
   }
 
   return (
