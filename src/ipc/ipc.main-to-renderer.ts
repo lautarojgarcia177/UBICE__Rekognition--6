@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { NOTIFY_ERROR, REKOGNITION_FINISH, REKOGNITION_PROGRESS } from "./ipc.messages.constants";
+import { APP_ERROR, REKOGNITION_FINISH, REKOGNITION_PROGRESS } from "./ipc.messages.constants";
 
 // Main to Renderer (one-way)
 export function notifyRekognitionProgress(
@@ -15,5 +15,6 @@ export function notifyRekognitionFinish(browserWindow: BrowserWindow) {
 
 /* Notifies error */
 export function notifyError(browserWindow: BrowserWindow, err) {
-  browserWindow.webContents.send(NOTIFY_ERROR, err);
+  console.log('been here notifyERror');
+  browserWindow.webContents.send(APP_ERROR, err);
 }

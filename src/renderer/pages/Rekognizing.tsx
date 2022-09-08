@@ -1,4 +1,5 @@
 import { Button, Progress, Spinner, useToast, VStack } from '@chakra-ui/react';
+import { AWSRekognitionErrorTypes } from 'enums';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -36,6 +37,14 @@ const Rekognizing = () => {
 
   useEffect(() => {
     window.electron.startImagesRekognition(stateFiles);
+    window.electron.onError((_event, error: Error) => {
+      switch(error.name) {
+        case AWSRekognitionErrorTypes.InvalidSignatureException:
+          navigate('/');
+          break;
+      }
+      navigate('/');
+    });
   }, []);
 
   function handleCancel(): void {

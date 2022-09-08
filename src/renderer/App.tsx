@@ -48,8 +48,8 @@ export default function App() {
         setAwsRekognitionSettings(settings);
       }
     });
-    // Show errors
-    window.electron.onError((error: Error) => {
+    // Subscribe to show error toasts
+    window.electron.onError((_event, error: Error) => {
       toast({
         title: error.name,
         description: error.message,
