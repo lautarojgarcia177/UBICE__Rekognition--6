@@ -198,8 +198,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "UBICE_Rekognition",
+    "appId": "org.erb.UBICE_Rekognition",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -257,12 +257,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "UBICE_Rekognition",
+      "repo": "UBICE_Rekognition"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
