@@ -23,7 +23,6 @@ export async function rekognizeImages(
         awsRekognitionSettings.minConfidence
         );
         image.numbers = rekognizedNumbers;
-        console.log(image.numbers);
     } catch (err) {
       awsRekognitionPromiseErrorHandler(err);
     }

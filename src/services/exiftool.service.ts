@@ -13,5 +13,7 @@ export async function writeMetadataOnRekognizedImage(image: IRekognitionFile) {
     // Convert numbers to strings
     image.numbers = numbersForTag.map((number) => String(number));
   }
+  const { Keywords } = await exiftool.read(image.path);
+  image.numbers = image.numbers.filter(number => !Keywords?.includes(number));
   return exiftool.write(image.path, { Keywords: [...image.numbers] });
 }
